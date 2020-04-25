@@ -4,7 +4,7 @@ const Config = require('./lib/CurtainConfig')
 const Controller = require('./lib/CurtainController')
 
 const hostname = '127.0.0.1';
-const port = 3000;
+const port = 13000;
 
 (async function() {
 
@@ -20,7 +20,7 @@ const port = 3000;
   );
   const deviceIds = Object.values(config.get().curtains)
     .map(x => x.ewelinkDeviceId);
-  await relays.init(false, Array.from(new Set(deviceIds)));
+  await relays.init(true, Array.from(new Set(deviceIds)));
 
   // initialize controller
   const controller = new Controller(config, relays);
