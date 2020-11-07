@@ -6,9 +6,18 @@ const Controller = require('./lib/CurtainController')
 const hostname = '127.0.0.1';
 const port = 13000;
 
+const pino = require('pino');
+const logger = pino({
+  prettyPrint: {
+    colorize: true,
+    translateTime: 'SYS:standard'
+  }
+});
+
+
 (async function() {
 
-  // laod config
+  // load config
   const config = new Config();
   await config.load();
 
@@ -32,7 +41,7 @@ const port = 13000;
       const path = req.url.split(/\//);
       const curtain = path[1];
       const action = path[2];
-      console.log('receive request ' + curtain + ": " + action);
+      logger.info('receive request ' + curtain + ": " + action);
       // check action
       if (action !== 'up' && action !== 'down' && action !== 'stop') {
         throw 'invalid action on ' + curtain + ': ' + action;
@@ -49,7 +58,7 @@ const port = 13000;
           controller.stop(curtain);
           break;
       }
-      res.statusCode = 201;
+      res.statusCode = 200;
       res.end();
     }
     catch (exception) {
@@ -60,7 +69,7 @@ const port = 13000;
   })
 
   server.listen(port, hostname, () => {
-    console.log(`Curtain server running at http://${hostname}:${port}/`);
+    logger.info(`Curtain server running at http://${hostname}:${port}/`);
   })
 })()
 
