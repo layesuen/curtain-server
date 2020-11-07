@@ -62,9 +62,10 @@ const logger = pino({
       res.end();
     }
     catch (exception) {
-      res.statusCode = 400;
+      res.statusCode = 500;
       res.setHeader('Content-Type', 'text/plain');
-      res.end(exception);
+      res.end("error");
+      logger.error(exception);
     }
   })
 
